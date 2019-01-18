@@ -16,8 +16,7 @@ class SignsController extends Controller
      */
     public function index()
     {
-        $wechatUser = session('wechat.auth_user.default');
-        dd($wechatUser);
+        $wechatUser = session('wechat.oauth_user.default');
         $data['openid'] = $wechatUser->getId();
         $data['nickname'] = $wechatUser->getName();
         $data['avatar'] = $wechatUser->avatar;
@@ -50,10 +49,10 @@ class SignsController extends Controller
                 'required',
                 'numeric',
                 'regex:/^1[23456789]\d{9}$/',
-                Rule::unique('signs', 'mobile'),
+                Rule::unique('signs','mobile'),
             ],
         ], [], $message);
-        $wechatUser = session('wechat.auth_user.default');
+        $wechatUser = session('wechat.oauth_user.default');
         $data['openid'] = $wechatUser->getId();
         $data['nickname'] = $wechatUser->getName();
         $data['avatar'] = $wechatUser->avatar;
