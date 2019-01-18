@@ -16,17 +16,8 @@ class SignsController extends Controller
      */
     public function index()
     {
-        $wechatUser = session('wechat.oauth_user.default');
-        $signCount = Sign::where('openid',$wechatUser->getId())->count();
-        abort_if($signCount,400,'你已经签到过了');
-        $data['openid'] = $wechatUser->getId();
-        $data['nickname'] = $wechatUser->getName();
-        $data['avatar'] = $wechatUser->avatar;
-        $data['sex'] = $wechatUser->original['sex'];
-        $data['name'] = '刘勇';
-        $data['mobile'] = 15882158753;
-        $response = Sign::create($data);
-        dd($response);
+        $data = Sign::orderBy('created_at','asc')->get();
+        return response()->json($data,200);
     }
 
     /**
@@ -63,7 +54,8 @@ class SignsController extends Controller
         $data['sex'] = $wechatUser->original['sex'];
         $data['name'] = $request->input('name');
         $data['mobile'] = $request->input('mobile');
-        Sign::create($data);
+        $data = Sign::create($data);
+        return response()->json($data,201);
     }
 
     /**
