@@ -16,7 +16,7 @@ class SignsController extends Controller
     {
         $user = session('wechat.oauth_user.default');
 
-        dd($user);
+        dump($user);
         $we = $user->get();
         dd($we);
     }
