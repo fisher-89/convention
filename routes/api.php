@@ -17,6 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::namespace('Api')->middleware(['wechat.oauth:snsapi_userinfo'])->group(function(){
+Route::namespace('Api')->middleware(['wechat.oauth'])->group(function(){
     Route::apiResource('sign','SignsController');
 });
