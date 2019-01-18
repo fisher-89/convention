@@ -14,8 +14,10 @@ class SignsController extends Controller
      */
     public function index()
     {
-        $user = session('wechat.oauth_user');
-        dd($user);
+        $user = session('wechat.oauth_user.default');
+        dump($user);
+        $wechat = app()->user->get($user['id']);
+        dd($wechat);
     }
 
     /**
