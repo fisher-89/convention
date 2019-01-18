@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::namespace('Api')->middleware(['wechat.oauth'])->group(function(){
     Route::apiResource('sign','SignsController');
 });
+Route::apiResource('sign','Api\SignsController');

@@ -17,12 +17,14 @@ class SignsController extends Controller
     public function index()
     {
         $wechatUser = session('wechat.oauth_user.default');
+        $signCount = Sign::where('openid',$wechatUser->getId())->count();
+        abort_if($signCount,400,'你已经签到过了');
         $data['openid'] = $wechatUser->getId();
         $data['nickname'] = $wechatUser->getName();
         $data['avatar'] = $wechatUser->avatar;
         $data['sex'] = $wechatUser->original['sex'];
         $data['name'] = '刘勇';
-        $data['moblie'] = 15882158753;
+        $data['mobile'] = 15882158753;
         $response = Sign::create($data);
         dd($response);
     }
@@ -47,18 +49,20 @@ class SignsController extends Controller
             ],
             'mobile' => [
                 'required',
-                'numeric',
+                'string',
                 'regex:/^1[23456789]\d{9}$/',
                 Rule::unique('signs','mobile'),
             ],
         ], [], $message);
         $wechatUser = session('wechat.oauth_user.default');
+        $signCount = Sign::where('openid',$wechatUser->getId())->count();
+        abort_if($signCount,400,'你已经签到过了');
         $data['openid'] = $wechatUser->getId();
         $data['nickname'] = $wechatUser->getName();
         $data['avatar'] = $wechatUser->avatar;
         $data['sex'] = $wechatUser->original['sex'];
         $data['name'] = $request->input('name');
-        $data['moblie'] = $request->input('mobile');
+        $data['mobile'] = $request->input('mobile');
         Sign::create($data);
     }
 
