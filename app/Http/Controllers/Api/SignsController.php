@@ -16,9 +16,15 @@ class SignsController extends Controller
      */
     public function index()
     {
-        $user = session('wechat.oauth_user.default');
-        $data = $user->nickname;
-        dd($user, $data);
+        $wechatUser = session('wechat.auth_user.default');
+        $data['openid'] = $wechatUser->getId();
+        $data['nickname'] = $wechatUser->getName();
+        $data['avatar'] = $wechatUser->avatar;
+        $data['sex'] = $wechatUser->original['sex'];
+        $data['name'] = '刘勇';
+        $data['moblie'] = 15882158753;
+        $response = Sign::create($data);
+        dd($response);
     }
 
     /**
@@ -47,7 +53,13 @@ class SignsController extends Controller
             ],
         ], [], $message);
         $wechatUser = session('wechat.auth_user.default');
-//        Sign::create($data);
+        $data['openid'] = $wechatUser->getId();
+        $data['nickname'] = $wechatUser->getName();
+        $data['avatar'] = $wechatUser->avatar;
+        $data['sex'] = $wechatUser->original['sex'];
+        $data['name'] = $request->input('name');
+        $data['moblie'] = $request->input('mobile');
+        Sign::create($data);
     }
 
     /**
