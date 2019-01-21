@@ -14,7 +14,7 @@ class SignsController extends Controller
      */
     public function index()
     {
-        $wechatUser = session('wechat.oauth_user.snsapi_userinfo');
+        $wechatUser = session('wechat.oauth_user');
         dd($wechatUser);
         return view('sign');
     }
