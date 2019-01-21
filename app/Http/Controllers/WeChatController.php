@@ -31,7 +31,7 @@ class WeChatController extends Controller
 //        $openPlatform = Factory::openPlatform(config('wechat.open_platform.default'));
 //        $openPlatform->getPreAuthorizationUrl(route('callback')); // 传入回调URI即可
 
-        $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx928eacf7fdbd4e0d&redirect_uri='.urlencode(route('callback')).'&response_type=code&scope=snsapi_base';
+        $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx928eacf7fdbd4e0d&redirect_uri='.urlencode(route('callback')).'&response_type=code&scope=snsapi_userinfo';
 
           //初始化
       $curl = curl_init();
