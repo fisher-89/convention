@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use EasyWeChat\Factory;
 use Illuminate\Http\Request;
 use Log;
 
@@ -27,8 +28,10 @@ class WeChatController extends Controller
     public function show()
     {
         $openPlatform = app('wechat.open_platform');
+//        $openPlatform = Factory::openPlatform(config('wechat.open_platform.default'));
         $openPlatform->getPreAuthorizationUrl(route('callback')); // 传入回调URI即可
-//        dd($openPlatform);
+
+        dd($openPlatform);
     }
 
     public function callback()
