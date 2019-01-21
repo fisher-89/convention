@@ -18,6 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('Api')->middleware(['wechat.oauth'])->group(function(){
-    Route::apiResource('sign','SignsController');
+//    Route::get('form',);
+    //签到提交
+    Route::post('sign','SignsController@store');
 });
-Route::apiResource('sign','Api\SignsController');
+//签到列表
+Route::get('sign','Api\SignsController@index');
+
+// 中奖
+Route::apiResource('winner','Api\WinnersController');
