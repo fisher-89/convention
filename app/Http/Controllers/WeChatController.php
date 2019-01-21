@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use EasyWeChat\Factory;
 use Illuminate\Http\Request;
 use Log;
 
@@ -27,6 +28,7 @@ class WeChatController extends Controller
     public function show()
     {
         $wechatUser = session('wechat.oauth_user.default');
-        dd($wechatUser);
+        $userInfo = Factory::officialAccount('wechat.official_account.default');
+        dd($wechatUser,$userInfo);
     }
 }
