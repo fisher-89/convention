@@ -16,7 +16,8 @@ Route::get('/', function () {
 });
 Route::any('/wechat', 'WeChatController@serve');
 
-Route::middleware(['web','wechat.oauth'])->group(function(){
+//Route::middleware(['web','wechat.oauth'])->group(function(){
     //签到表单
     Route::get('sign','WeChatController@show');
-});
+//});
+Route::get('callback','WeChatController@callback')->name('callback');

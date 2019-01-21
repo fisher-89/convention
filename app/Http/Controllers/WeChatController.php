@@ -26,7 +26,13 @@ class WeChatController extends Controller
 
     public function show()
     {
-        $wechatUser = session('wechat.oauth_user.default');
-        dd($wechatUser);
+        $openPlatform = app('wechat.open_platform');
+        $openPlatform->getPreAuthorizationUrl(route('callback')); // 传入回调URI即可
+//        dd($openPlatform);
+    }
+
+    public function callback()
+    {
+        dd('callback',request()->all());
     }
 }
