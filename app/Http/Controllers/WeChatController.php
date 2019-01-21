@@ -28,7 +28,8 @@ class WeChatController extends Controller
     public function show()
     {
         $wechatUser = session('wechat.oauth_user.default');
-        $userInfo = Factory::officialAccount(config('wechat.official_account.default'));
-        dd($wechatUser,$userInfo);
+        $factory = Factory::officialAccount(config('wechat.official_account.default'));
+        $user = $factory->user->get($wechatUser->getId());
+        dd($wechatUser,$user);
     }
 }
