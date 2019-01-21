@@ -46,7 +46,7 @@ class WeChatController extends Controller
      //关闭URL请求
      curl_close($curl);
      //显示获得的数据
-     dd($data);
+//     return $data;
     }
 
     public function callback()
