@@ -27,7 +27,7 @@
         </div>
         <div>
             <label for="">手机：</label>
-            <input type="text" name="mobile" required minlength="2" maxlength="10" placeholder="请输入手机号">
+            <input type="text" name="mobile" required minlength="1" maxlength="11" placeholder="请输入手机号">
         </div>
         <div>
             <input type="submit" value="提交" >
