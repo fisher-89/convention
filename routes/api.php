@@ -17,11 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::namespace('Api')->middleware(['wechat.oauth'])->group(function(){
-//    Route::get('form',);
-    //签到提交
-    Route::post('sign','SignsController@store');
-});
 //签到列表
 Route::get('sign','Api\SignsController@index');
 
