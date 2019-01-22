@@ -69,7 +69,7 @@ class SignsController extends Controller
         $data['sex'] = $wechatUser->original['sex'];
         $data['name'] = $request->input('name');
         $data['mobile'] = $request->input('mobile');
-
+        Sign::create($data);
         return redirect('/sign');
     }
 
