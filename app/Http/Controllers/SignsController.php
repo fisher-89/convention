@@ -15,6 +15,7 @@ class SignsController extends Controller
      */
     public function index()
     {
+        dd(2);
         $wechatUser = session('wechat.oauth_user.default');
         dd($wechatUser,$wechatUser->getId());
         $data = Sign::where('openid',$wechatUser->getId())->first();
