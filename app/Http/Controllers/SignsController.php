@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sign;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SignsController extends Controller
 {
@@ -15,7 +16,9 @@ class SignsController extends Controller
     public function index()
     {
         $wechatUser = session('wechat.oauth_user.default');
-        dd($wechatUser);
+        $data = Sign::where('openid',$wechatUser->getId())->first();
+        if($data)
+            return view('show',$data);
         return view('sign');
     }
 
@@ -54,26 +57,21 @@ class SignsController extends Controller
                 Rule::unique('signs', 'mobile'),
             ],
         ], [], $message);
+
         $wechatUser = session('wechat.oauth_user.default');
         $openId = $wechatUser->getId();
-        $signCount = Sign::where('openid', $wechatUser->getId())->count();
+        $signCount = Sign::where('openid', $openId)->count();
         abort_if($signCount, 400, '你已经签到过了');
-//        if()
-        $data['openid'] = $wechatUser->getId();
+
+        $data['openid'] = $openId;
         $data['nickname'] = $wechatUser->getName();
         $data['avatar'] = $wechatUser->avatar;
         $data['sex'] = $wechatUser->original['sex'];
         $data['name'] = $request->input('name');
         $data['mobile'] = $request->input('mobile');
         $data = Sign::create($data);
-        return response()->json($data, 201);
-
-
-
-        $wechatUser = session('wechat.oauth_user.default');
-        $factory = Factory::officialAccount(config('wechat.official_account.default'));
-        $user = $factory->user->get($wechatUser->getId());
-        dd($wechatUser,$user);
+        return redirect()->route('/sign');
+//        return response()->json($data, 201);
     }
 
     /**

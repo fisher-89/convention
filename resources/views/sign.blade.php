@@ -9,6 +9,30 @@
 </head>
 
 <body>
-    <h1>ddd</h1>
+<section>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    <form action="{{url('/sign')}}" method="post">
+        @csrf
+        <div>
+            <label for="">名字：</label>
+            <input type="text" name="name" required minlength="2" maxlength="10" placeholder="请输入你的真实名字"/>
+        </div>
+        <div>
+            <label for="">手机：</label>
+            <input type="text" name="mobile" required minlength="2" maxlength="10" placeholder="请输入手机号">
+        </div>
+        <div>
+            <input type="submit" value="提交" >
+        </div>
+    </form>
+</section>
 </body>
 </html>
