@@ -17,8 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//签到列表
-Route::get('sign','Api\SignsController@index');
+Route::apiResource('sign','Api\SignsController');
 
 // 中奖
 Route::apiResource('winner','Api\WinnersController');
