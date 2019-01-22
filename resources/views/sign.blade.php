@@ -23,16 +23,39 @@
         @csrf
         <div>
             <label for="">名字：</label>
-            <input type="text" name="name" required minlength="2" maxlength="10" placeholder="请输入你的真实名字"/>
+            {{--<input type="text" name="name" required minlength="2" maxlength="10" placeholder="请输入你的真实名字"/>--}}
+            <input type="text" name="name" placeholder="请输入你的真实名字"/>
         </div>
         <div>
             <label for="">手机：</label>
-            <input type="text" name="mobile" required minlength="1" maxlength="11" placeholder="请输入手机号">
+            {{--<input type="text" name="mobile" required minlength="1" maxlength="11" placeholder="请输入手机号">--}}
+            <input type="text" name="mobile" placeholder="请输入手机号">
         </div>
-        <div>
-            <input type="submit" value="提交" >
-        </div>
+        <input type="submit" value="提交">
     </form>
+    {{--<input type="button" value="提交" onclick="submit()">--}}
 </section>
 </body>
+<script>
+    /*
+    function submit() {
+        var params = $('form').serialize();
+        $.ajax({
+            type: 'post',
+            url: '/sign',
+            data: params,
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (data) {
+                console.log(data)
+            },
+            error: function (errors) {
+                console.log(errors)
+            }
+        })
+    }
+    */
+</script>
 </html>
