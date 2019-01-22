@@ -9,9 +9,9 @@
 <body>
 <section>
     <div>
-        <img src="{{$data->avatar}}" alt="头像" title="头像">
-        <p>{{$data->name}}</p>
-        <p>{{$data->mobile}}</p>
+        <img src="{{$avatar}}" alt="头像" title="头像">
+        <p>{{$name}}</p>
+        <p>{{$mobile}}</p>
     </div>
 </section>
 </body>

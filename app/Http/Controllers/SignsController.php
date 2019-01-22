@@ -69,9 +69,8 @@ class SignsController extends Controller
         $data['sex'] = $wechatUser->original['sex'];
         $data['name'] = $request->input('name');
         $data['mobile'] = $request->input('mobile');
-        $data = Sign::create($data);
-        return redirect()->route('/sign');
-//        return response()->json($data, 201);
+
+        return redirect('/sign');
     }
 
     /**
