@@ -16,6 +16,6 @@ Route::get('/', function () {
 });
 Route::any('/wechat', 'WeChatController@serve');
 
-//Route::middleware(['wechat.oauth:snsapi_userinfo'])->group(function(){
+Route::middleware(['wechat.oauth:snsapi_userinfo'])->group(function(){
     Route::resource('/sign','SignsController');
-//});
+});
