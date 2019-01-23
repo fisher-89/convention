@@ -21,3 +21,6 @@ Route::apiResource('sign','Api\SignsController');
 
 // 中奖
 Route::apiResource('winner','Api\WinnersController');
+
+//弃奖
+Route::patch('abandon-prize','Api\WinnersController@abandonPrize');
