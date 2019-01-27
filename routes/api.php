@@ -17,7 +17,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// 签到
 Route::apiResource('sign','Api\SignsController');
+
+// 获取最新的配置
+Route::get('configuration','Api\ConfigurationsController@index');
+// 配置提交
+Route::post('configuration','Api\ConfigurationsController@store');
+// 开始抽奖
+Route::get('start','Api\ConfigurationsController@start');
+// 继续抽奖
+Route::get('continue','Api\ConfigurationsController@continueDraw');
+
 
 // 中奖
 Route::apiResource('winner','Api\WinnersController');

@@ -15,9 +15,19 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
+//        Registered::class => [
+//            SendEmailVerificationNotification::class,
+//        ],
+
+        //抽奖开始事件
+        'App\Events\DrawStart' => [],
+        // 抽奖继续
+        'App\Events\DrawContinue'=>[],
+
+        // 中奖提交
+        'App\Events\WinnerSubmit'=>[],
+        // 中奖 弃奖
+        'App\Events\WinnerAbandon'=>[],
     ];
 
     /**

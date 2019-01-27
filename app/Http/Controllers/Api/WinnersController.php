@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\WinnerAbandon;
+use App\Events\WinnerSubmit;
+use App\Models\Configuration;
 use App\Models\Winner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,6 +13,7 @@ use Illuminate\Validation\Rule;
 class WinnersController extends Controller
 {
     /**
+     * 中奖列表
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -17,7 +21,7 @@ class WinnersController extends Controller
     public function index()
     {
         $round = request()->query('round');
-        $data = Winner::with('sign', 'award')
+        $data = Winner::with('sign')
             ->where('is_receive',1)
             ->when($round, function ($query) use ($round) {
                 return $query->where('round', $round);
@@ -27,6 +31,7 @@ class WinnersController extends Controller
     }
 
     /**
+     * 中奖提交
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -34,10 +39,30 @@ class WinnersController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->input();
-        data_fill($data, '*.created_at', date('Y-m-d H:i:s'));
-        Winner::insert($data);
-        return response()->json([], 201);
+        $message = [
+          'round'=>'抽奖轮数',
+          'openid'=>'中奖用户'
+        ];
+        $request->validate([
+            'round'=>[
+                'required',
+                'integer',
+                Rule::exists('configurations')
+            ],
+            'openid'=>[
+                'array'
+            ]
+        ],[],$message);
+
+        $round = $request->input('round');
+        $response = [];
+        foreach ($request->input('openid') as $openid){
+            $data = ['openid'=>$openid,'round'=>$round];
+            $db = Winner::create($data);
+            array_push($response,$db->toArray());
+        }
+        broadcast(new WinnerSubmit($response));
+        return response()->json($response, 201);
     }
 
     /**
@@ -83,6 +108,7 @@ class WinnersController extends Controller
         $winner = Winner::where($request->input())->first();
         $winner->is_receive = 0;
         $winner->save();
+        broadcast(new WinnerAbandon($winner->toArray()));
         return response()->json($winner, 201);
     }
 }

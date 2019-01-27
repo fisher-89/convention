@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWinnersTable extends Migration
+class CreateConfigurationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateWinnersTable extends Migration
      */
     public function up()
     {
-        Schema::create('winners', function (Blueprint $table) {
+        Schema::create('configurations', function (Blueprint $table) {
             $table->engine = 'MyISAM';
             $table->increments('id');
-            $table->char('openid',50)->comment('中奖用户微信openId')->index();
-            $table->unsignedTinyInteger('is_receive')->comment('是否领奖 1是，0否')->default(1);
-            $table->unsignedTinyInteger('round')->comment('抽奖第几轮')->nullable();
+            $table->unsignedInteger('round')->comment('抽奖第几轮')->unique();
+            $table->unsignedInteger('award_id')->comment('奖品ID');
+            $table->unsignedTinyInteger('persions')->comment('本轮抽奖人数');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateWinnersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('winners');
+        Schema::dropIfExists('configurations');
     }
 }
