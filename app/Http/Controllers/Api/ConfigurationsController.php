@@ -77,7 +77,7 @@ class ConfigurationsController extends Controller
     {
         $round = $request->query('round');
         $config = Configuration::withCount('winners')->where('round', $round)->first();
-        abort_if(!$config->winners_count, 400, '本轮不能继续抽奖了，请重新开启');
+        abort_if($config->winners_count == $config->persions, 400, '本轮不能继续抽奖了，请重新开启');
         $config->continue = ($config->persions - $config->winners_count);
         $data = $config->toArray();
         broadcast(new DrawContinue($data));
