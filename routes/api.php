@@ -35,3 +35,6 @@ Route::apiResource('winner','Api\WinnersController');
 
 //弃奖
 Route::patch('abandon-prize','Api\WinnersController@abandonPrize');
+
+// 获取网页授权access_token
+Route::post('web-access-token','Api\WeChatController@getWebAccessToken');

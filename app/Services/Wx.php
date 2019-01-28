@@ -13,9 +13,33 @@ use Illuminate\Support\Facades\Cache;
 class Wx
 {
 
-    public function getUserInfo(string $openid){
+    /**
+     * 通过code换取网页授权access_token
+     * @param $code
+     */
+    public function getWebAccessToken($code)
+    {
+        $appId = config('wechat.official_account.default.app_id');
+        $secret = config('wechat.official_account.default.secret');
+        $grantType = 'authorization_code';
+        $query = [
+            'appid' => $appId,
+            'secret' => $secret,
+            'code' => $code,
+            'grant_type' => $grantType
+        ];
+        $url = 'https://api.weixin.qq.com/sns/oauth2/access_token' . http_build_query($query);
+        $result = $this->curl($url);
+        if(!array_has($result,'access_token')){
+            abort(400,'获取access_token失败');
+        }
+        return $result;
+    }
+
+    public function getUserInfo(string $openid)
+    {
         $token = $this->getAccessToken();
-        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$token.'&openid='.$openid.'&lang=zh_CN';
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $openid . '&lang=zh_CN';
         $result = $this->curl($url);
         return $result;
     }
@@ -25,13 +49,13 @@ class Wx
         $accessToken = Cache::remember('access_token', 115, function () {
             return $this->httpRequestAccessToken();
         });
-       return $accessToken;
+        return $accessToken;
     }
 
     protected function httpRequestAccessToken()
     {
         $appId = config('wechat.official_account.default.app_id');
-        $secret =  config('wechat.official_account.default.secret');
+        $secret = config('wechat.official_account.default.secret');
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $appId . '&secret=' . $secret;
         $result = $this->curl($url);
         return $result['access_token'];
