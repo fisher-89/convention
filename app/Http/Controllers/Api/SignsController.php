@@ -25,7 +25,7 @@ class SignsController extends Controller
      */
     public function index()
     {
-        $size = request()->query('size',200);
+        $size = request()->query('size', 200);
         $winnerOpenid = Winner::pluck('openid')->all();
         $data = Sign::whereNotIn('openid', $winnerOpenid)->inRandomOrder()->limit($size)->get();
         return response()->json($data, 200);
@@ -41,13 +41,15 @@ class SignsController extends Controller
     public function store(Request $request)
     {
         $message = [
+            'openid' => '微信用户',
             'name' => '姓名',
             'mobile' => '手机'
         ];
         $request->validate([
-            'openid'=>[
-              'required',
-              'string'
+            'openid' => [
+                'required',
+                'string',
+                Rule::unique('signs')
             ],
             'name' => [
                 'required',
@@ -68,7 +70,7 @@ class SignsController extends Controller
         $signCount = Sign::where('openid', $openId)->count();
         abort_if($signCount, 400, '你已经签到过了');
 
-        $user =  $this->wx->getUserInfo($openId);
+        $user = $this->wx->getUserInfo($openId);
 
         $data['openid'] = $openId;
         $data['nickname'] = $user['nickname'];
