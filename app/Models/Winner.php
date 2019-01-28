@@ -16,4 +16,9 @@ class Winner extends Model
     {
         return $this->hasOne(Sign::class, 'openid', 'openid');
     }
+
+    public function configuration()
+    {
+        return $this->belongsTo(Configuration::class,'round','round');
+    }
 }

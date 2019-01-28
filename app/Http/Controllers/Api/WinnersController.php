@@ -21,7 +21,7 @@ class WinnersController extends Controller
     public function index()
     {
         $round = request()->query('round');
-        $data = Winner::with('sign')
+        $data = Winner::with('configuration','sign')
             ->where('is_receive',1)
             ->when($round, function ($query) use ($round) {
                 return $query->where('round', $round);
