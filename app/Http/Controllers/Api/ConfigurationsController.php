@@ -20,7 +20,7 @@ class ConfigurationsController extends Controller
     {
         $maxRound = Configuration::max('round');
         $data = Configuration::with('winners.sign')->where('round', $maxRound)->first();
-        return $data;
+        return response()->json($data,200);
     }
 
     /**
