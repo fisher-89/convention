@@ -14,7 +14,12 @@ class WeChatController extends Controller
         $this->wx = $wx;
     }
 
-    public function getWebAccessToken(Request $request)
+    /**
+     * 获取openid
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getOpenid(Request $request)
     {
         $request->validate([
             'code'=>[
@@ -25,7 +30,10 @@ class WeChatController extends Controller
             'code'=>'微信授权code'
         ]);
         $code = $request->input('code');
-        $data = $this->wx->getWebAccessToken($code);
+        $openid = $this->wx->getOpenid($code);
+        $data = [
+            'openid'=>$openid,
+        ];
         return response()->json($data,201);
     }
 }

@@ -17,6 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// 获取网页授权openid
+Route::post('openid','Api\WeChatController@getOpenid');
+
 // 签到
 Route::apiResource('sign','Api\SignsController');
 
@@ -36,5 +39,3 @@ Route::apiResource('winner','Api\WinnersController');
 //弃奖
 Route::patch('abandon_prize','Api\WinnersController@abandonPrize');
 
-// 获取网页授权access_token
-Route::post('web_access_token','Api\WeChatController@getWebAccessToken');

@@ -45,11 +45,14 @@ class SignsController extends Controller
             'name' => '姓名',
             'mobile' => '手机'
         ];
+        $cacheOpenid = $this->wx->checkWebAccessToken($request->input('openid'));
+
         $request->validate([
             'openid' => [
                 'required',
                 'string',
-                Rule::unique('signs')
+                Rule::in([$cacheOpenid]),
+                Rule::unique('signs'),
             ],
             'name' => [
                 'required',
