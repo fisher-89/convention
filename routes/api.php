@@ -35,7 +35,6 @@ Route::get('continue','Api\ConfigurationsController@continueDraw');
 
 // 中奖
 Route::apiResource('winner','Api\WinnersController');
-
 //弃奖
 Route::patch('abandon_prize','Api\WinnersController@abandonPrize');
 
