@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Events\WinnerAbandon;
-use App\Events\WinnerSubmit;
-use App\Models\Configuration;
 use App\Models\Winner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Validation\Rule;
 
 class WinnersController extends Controller
 {
@@ -31,7 +28,6 @@ class WinnersController extends Controller
     }
 
     /**
-     * 中奖提交
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -39,30 +35,7 @@ class WinnersController extends Controller
      */
     public function store(Request $request)
     {
-        $message = [
-          'round'=>'抽奖轮数',
-          'openid'=>'中奖用户'
-        ];
-        $request->validate([
-            'round'=>[
-                'required',
-                'integer',
-                Rule::exists('configurations')
-            ],
-            'openid'=>[
-                'array'
-            ]
-        ],[],$message);
-
-        $round = $request->input('round');
-        $response = [];
-        foreach ($request->input('openid') as $openid){
-            $data = ['openid'=>$openid,'round'=>$round];
-            $db = Winner::create($data);
-            array_push($response,$db->toArray());
-        }
-        broadcast(new WinnerSubmit($response));
-        return response()->json($response, 201);
+        //
     }
 
     /**

@@ -29,6 +29,8 @@ Route::get('configuration','Api\ConfigurationsController@index');
 Route::post('configuration','Api\ConfigurationsController@store');
 // 开始抽奖
 Route::get('start','Api\ConfigurationsController@start');
+// 停止抽奖
+Route::get('stop','Api\ConfigurationsController@stop');
 // 继续抽奖
 Route::get('continue','Api\ConfigurationsController@continueDraw');
 

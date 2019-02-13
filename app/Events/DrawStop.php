@@ -10,19 +10,21 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class WinnerSubmit implements ShouldBroadcast
+class DrawStop implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $data;
+    protected $data;
+    protected $users;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(array $data)
+    public function __construct(array $data,array $users)
     {
         $this->data = $data;
+        $this->users = $users;
     }
 
     /**
@@ -32,7 +34,15 @@ class WinnerSubmit implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('winner');
+        return new Channel('draw');
 //        return new PrivateChannel('channel-name');
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'data'=>$this->data,
+            'users'=>$this->users,
+        ];
     }
 }

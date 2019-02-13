@@ -14,15 +14,17 @@ class DrawStart implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $data;
+    protected $data;
+    protected $users;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(array $data)
+    public function __construct(array $data,array $users)
     {
         $this->data = $data;
+        $this->users = $users;
     }
 
     /**
@@ -34,5 +36,13 @@ class DrawStart implements ShouldBroadcast
     {
 //        return new PrivateChannel('channel-name');
         return new Channel('draw');
+    }
+
+    public function broadcastWith()
+    {
+        return [
+          'data'=>$this->data,
+          'users'=>$this->users,
+        ];
     }
 }

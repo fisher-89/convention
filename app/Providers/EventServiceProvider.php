@@ -21,11 +21,11 @@ class EventServiceProvider extends ServiceProvider
 
         //抽奖开始事件
         'App\Events\DrawStart' => [],
+        // 抽奖停止
+        'App\Events\DrawStop' => [],
         // 抽奖继续
         'App\Events\DrawContinue'=>[],
 
-        // 中奖提交
-        'App\Events\WinnerSubmit'=>[],
         // 中奖 弃奖
         'App\Events\WinnerAbandon'=>[],
     ];
