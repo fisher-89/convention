@@ -40,8 +40,10 @@ class Wx
             'code' => $code,
             'grant_type' => $grantType
         ];
-        $url = 'https://api.weixin.qq.com/sns/oauth2/access_token' . http_build_query($query);
+        $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?' . http_build_query($query);
+        dd($url);
         $result = $this->curl($url);
+        dd($result);
         if (!array_has($result, 'access_token')) {
             abort(400, '获取access_token失败');
         }
@@ -81,7 +83,7 @@ class Wx
             'refresh_token' => $refreshToken,
 
         ];
-        $url = 'https://api.weixin.qq.com/sns/oauth2/refresh_token' . http_build_query($query);
+        $url = 'https://api.weixin.qq.com/sns/oauth2/refresh_token?' . http_build_query($query);
         $result = $this->curl($url);
         if (!array_has($result, 'access_token')) {
             abort(400, '刷新access_token失败');
