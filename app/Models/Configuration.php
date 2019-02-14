@@ -14,6 +14,6 @@ class Configuration extends Model
 
     public function winners()
     {
-        return $this->hasMany(Winner::class,'round','round')->where('is_receive',1);
+        return $this->hasMany(Winner::class,'round','round');
     }
 }

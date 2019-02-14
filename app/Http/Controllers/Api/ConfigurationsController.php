@@ -22,8 +22,13 @@ class ConfigurationsController extends Controller
     public function index()
     {
         $maxRound = Configuration::max('round');
-        $data = Configuration::with('winners.sign')->where('round', $maxRound)->first();
-        return response()->json($data,200);
+        $data = Configuration::with([
+            'winners' => function ($query) {
+                $query->where('is_receive', 1);
+            },
+            'winners.sign'
+        ])->where('round', $maxRound)->first();
+        return response()->json($data, 200);
     }
 
     /**
@@ -53,7 +58,7 @@ class ConfigurationsController extends Controller
 
         $round = $maxRound ? (++$maxRound) : 1;
 
-        $request->offsetSet('round',$round);
+        $request->offsetSet('round', $round);
         $data = Configuration::create($request->input());
         return response()->json($data, 201);
     }
@@ -69,7 +74,7 @@ class ConfigurationsController extends Controller
         $data = $config->toArray();
 
         $users = $this->getDrawUsers();
-        broadcast(new DrawStart($data,$users));
+        broadcast(new DrawStart($data, $users));
         return response()->json($data, 200);
     }
 
@@ -81,18 +86,22 @@ class ConfigurationsController extends Controller
     public function stop(Request $request)
     {
         $round = $request->query('round');
-        $config = Configuration::where('round', $round)->first();
-        $persions = $config->persions;
+        $config = Configuration::with([
+            'winners' => function ($query) {
+                $query->where('is_receive', 1);
+            }
+        ])->where('round', $round)->first();
+        $persions = ($config->winners->count() > 0) ? ($config->persions - $config->winners->count()) : $config->persions;
         $winnerOpenid = Winner::pluck('openid')->all();
         $winnerUsers = Sign::whereNotIn('openid', $winnerOpenid)->inRandomOrder()->limit($persions)->get();
         // 中奖用户存入数据库
-        $winnerUsers->map(function($user)use($round){
+        $winnerUsers->map(function ($user) use ($round) {
             $data['openid'] = $user->openid;
             $data['round'] = $round;
             Winner::create($data);
         });
-        broadcast(new DrawStop($config->toArray(),$winnerUsers->toArray()));
-        return response()->json($winnerUsers,200);
+        broadcast(new DrawStop($config->toArray(), $winnerUsers->toArray()));
+        return response()->json($winnerUsers, 200);
 
     }
 
@@ -104,14 +113,16 @@ class ConfigurationsController extends Controller
     public function continueDraw(Request $request)
     {
         $round = $request->query('round');
-        $config = Configuration::withCount('winners')->where('round', $round)->first();
+        $config = Configuration::withCount(['winners' => function ($query) {
+            $query->where('is_receive', 1);
+        }])->where('round', $round)->first();
         abort_if($config->winners_count == $config->persions, 400, '本轮不能继续抽奖了，请重新开启');
         $config->continue = ($config->persions - $config->winners_count);
         $data = $config->toArray();
 
         $users = $this->getDrawUsers();
-        broadcast(new DrawContinue($data,$users));
-        return response()->json($users, 200);
+        broadcast(new DrawContinue($data, $users));
+        return response()->json($data, 200);
     }
 
     /**
