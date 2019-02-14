@@ -40,6 +40,7 @@ class Wx
             'code' => $code,
             'grant_type' => $grantType
         ];
+        // 微信
         $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?' . http_build_query($query);
         $result = $this->curl($url);
         if (!array_has($result, 'access_token')) {
