@@ -45,7 +45,6 @@ class Wx
         if (!array_has($result, 'access_token')) {
             abort(400, '获取access_token失败');
         }
-
         $openid = $result['openid'];
         $result['time'] = time() + 7100;
         Cache::forever($openid,$result);
