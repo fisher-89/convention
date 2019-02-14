@@ -21,13 +21,14 @@ class ConfigurationsController extends Controller
      */
     public function index()
     {
-        $maxRound = Configuration::max('round');
         $data = Configuration::with([
             'winners' => function ($query) {
                 $query->where('is_receive', 1);
             },
             'winners.sign'
-        ])->where('round', $maxRound)->first();
+        ])
+            ->orderBy('round', 'asc')
+            ->get();
         return response()->json($data, 200);
     }
 
