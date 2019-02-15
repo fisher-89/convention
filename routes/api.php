@@ -27,6 +27,8 @@ Route::apiResource('sign','Api\SignsController');
 Route::get('configuration','Api\ConfigurationsController@index');
 // 配置提交
 Route::post('configuration','Api\ConfigurationsController@store');
+// 配置修改
+Route::put('configuration/{round}','Api\ConfigurationsController@update');
 // 开始抽奖
 Route::get('start','Api\ConfigurationsController@start');
 // 停止抽奖

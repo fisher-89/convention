@@ -38,6 +38,33 @@ class ConfigurationsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validateRequest($request);
+        $maxRound = Configuration::max('round');
+
+        $round = $maxRound ? (++$maxRound) : 1;
+
+        $request->offsetSet('round', $round);
+        $data = Configuration::create($request->input());
+        return response()->json($data, 201);
+    }
+
+    /**
+     * 修改配置
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request)
+    {
+        $this->validateRequest($request);
+        $round = $request->route('round');
+        $config = Configuration::where('round',$round)->firstOrFail();
+        abort_if($config->winners->count()>0,400,'本轮已经有中奖用户了不能进行编辑操作');
+        $config->update($request->input());
+        return response()->json($config,201);
+    }
+
+    protected function validateRequest($request)
+    {
         $message = [
             'award_id' => '奖品',
             'persions' => '抽奖人数'
@@ -55,15 +82,7 @@ class ConfigurationsController extends Controller
                 'max:255'
             ]
         ], [], $message);
-        $maxRound = Configuration::max('round');
-
-        $round = $maxRound ? (++$maxRound) : 1;
-
-        $request->offsetSet('round', $round);
-        $data = Configuration::create($request->input());
-        return response()->json($data, 201);
     }
-
     /**
      * 开始抽奖
      * @param Request $request
