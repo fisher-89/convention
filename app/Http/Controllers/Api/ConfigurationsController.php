@@ -141,9 +141,9 @@ class ConfigurationsController extends Controller
             $query->where('is_receive', 1);
         }])->where('round', $round)->first();
         abort_if($config->winners_count == $config->persions, 400, '本轮不能继续抽奖了，请重新开启');
-        $config->continue = ($config->persions - $config->winners_count);
         $config->is_progress = 1;
         $config->save();
+        $config->continue = ($config->persions - $config->winners_count);
         $data = $config->toArray();
 
         $users = $this->getDrawUsers();
