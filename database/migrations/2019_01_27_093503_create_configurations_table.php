@@ -19,6 +19,7 @@ class CreateConfigurationsTable extends Migration
             $table->unsignedInteger('round')->comment('抽奖第几轮')->unique();
             $table->unsignedInteger('award_id')->comment('奖品ID');
             $table->unsignedTinyInteger('persions')->comment('本轮抽奖人数');
+            $table->unsignedTinyInteger('is_progress')->default(0)->comment('抽奖进行中 1是 0否');
             $table->timestamps();
         });
     }

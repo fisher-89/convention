@@ -72,6 +72,8 @@ class ConfigurationsController extends Controller
     {
         $round = $request->query('round');
         $config = Configuration::where('round', $round)->first();
+        $config->is_progress = 1;
+        $config->save();
         $data = $config->toArray();
 
         $users = $this->getDrawUsers();
@@ -101,6 +103,8 @@ class ConfigurationsController extends Controller
             $data['round'] = $round;
             Winner::create($data);
         });
+        $config->is_progress = 0;
+        $config->save();
         broadcast(new DrawStop($config->toArray(), $winnerUsers->toArray()));
         return response()->json($winnerUsers, 200);
 
@@ -119,6 +123,8 @@ class ConfigurationsController extends Controller
         }])->where('round', $round)->first();
         abort_if($config->winners_count == $config->persions, 400, '本轮不能继续抽奖了，请重新开启');
         $config->continue = ($config->persions - $config->winners_count);
+        $config->is_progress = 1;
+        $config->save();
         $data = $config->toArray();
 
         $users = $this->getDrawUsers();

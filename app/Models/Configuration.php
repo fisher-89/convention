@@ -9,7 +9,8 @@ class Configuration extends Model
     protected $fillable = [
         'round',
         'award_id',
-        'persions'
+        'persions',
+        'is_progress',
     ];
 
     public function winners()
