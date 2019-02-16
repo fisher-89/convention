@@ -70,8 +70,8 @@ class SignsController extends Controller
 //        $openId = 'oYMWXxCUI2mP8zhk8mr9k_RX8syE';
         $openId = $request->input('openid');
 
-        $signCount = Sign::where('openid', $openId)->count();
-        abort_if($signCount, 400, '你已经签到过了');
+//        $signCount = Sign::where('openid', $openId)->count();
+//        abort_if($signCount, 400, '你已经签到过了');
 
         $user = $this->wx->getUserInfo($openId);
 
@@ -86,14 +86,16 @@ class SignsController extends Controller
     }
 
     /**
+     * 获取签到用户详情
      * Display the specified resource.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($openid)
     {
-        //
+       $data =  Sign::where('openid',$openid)->firstOrFail();
+       return response()->json($data,200);
     }
 
     /**
