@@ -22,10 +22,11 @@ class ConfigurationsController extends Controller
     public function index()
     {
         $data = Configuration::with([
+            'award',
             'winners' => function ($query) {
                 $query->where('is_receive', 1);
             },
-            'winners.sign'
+            'winners.sign',
         ])
             ->orderBy('round', 'asc')
             ->get();
@@ -90,7 +91,7 @@ class ConfigurationsController extends Controller
     public function start(Request $request)
     {
         $round = $request->query('round');
-        $config = Configuration::where('round', $round)->first();
+        $config = Configuration::with('award')->where('round', $round)->first();
         $config->is_progress = 1;
         $config->save();
         $data = $config->toArray();
@@ -109,6 +110,7 @@ class ConfigurationsController extends Controller
     {
         $round = $request->query('round');
         $config = Configuration::with([
+            'award',
             'winners' => function ($query) {
                 $query->where('is_receive', 1);
             }
@@ -137,7 +139,8 @@ class ConfigurationsController extends Controller
     public function continueDraw(Request $request)
     {
         $round = $request->query('round');
-        $config = Configuration::withCount(['winners' => function ($query) {
+        $config = Configuration::with('award')
+        ->withCount(['winners' => function ($query) {
             $query->where('is_receive', 1);
         }])->where('round', $round)->first();
         abort_if($config->winners_count == $config->persions, 400, '本轮不能继续抽奖了，请重新开启');

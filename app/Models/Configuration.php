@@ -17,4 +17,9 @@ class Configuration extends Model
     {
         return $this->hasMany(Winner::class,'round','round');
     }
+
+    public function award()
+    {
+        return $this->belongsTo(Award::class);
+    }
 }
