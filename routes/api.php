@@ -35,6 +35,8 @@ Route::get('start','Api\ConfigurationsController@start');
 Route::get('stop','Api\ConfigurationsController@stop');
 // 继续抽奖
 Route::get('continue','Api\ConfigurationsController@continueDraw');
+// 获取奖品
+Route::get('award','Api\ConfigurationsController@getAward');
 
 
 // 中奖

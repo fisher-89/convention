@@ -6,6 +6,7 @@ use App\Events\DrawContinue;
 use App\Events\DrawStart;
 use App\Events\DrawStop;
 use App\Http\Controllers\Controller;
+use App\Models\Award;
 use App\Models\Configuration;
 use App\Models\Sign;
 use App\Models\Winner;
@@ -163,5 +164,15 @@ class ConfigurationsController extends Controller
         $winnerOpenid = Winner::pluck('openid')->all();
         $users = Sign::whereNotIn('openid', $winnerOpenid)->inRandomOrder()->limit(200)->get();
         return $users->toArray();
+    }
+
+    /**
+     * 获取奖品列表
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAward()
+    {
+        $data = Award::get();
+        return response()->json($data,200);
     }
 }
