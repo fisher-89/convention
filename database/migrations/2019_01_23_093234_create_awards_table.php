@@ -17,6 +17,7 @@ class CreateAwardsTable extends Migration
             $table->engine = 'MyISAM';
             $table->increments('id');
             $table->char('name',20)->comment('奖品名称');
+            $table->string('url')->comment('奖品地址');
 //            $table->timestamps();
         });
     }
