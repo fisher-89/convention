@@ -24,4 +24,19 @@ class WeChatController extends Controller
 
         return $app->server->serve();
     }
+
+    public function getCode()
+    {
+        $appId = config('wechat.official_account.default.app_id');
+        $redirectUri = 'http://cs.xigemall.com/checkin/index.html';
+        $query = [
+            'appid' => $appId,
+            'redirect_uri' => urlencode($redirectUri),
+            'response_type'=>'code',
+            'scope'=>'snsapi_userinfo',
+            'state'=>'STATE',
+        ];
+        $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?' . http_build_query($query) . '#wechat_redirect';
+        return redirect($url);
+    }
 }
