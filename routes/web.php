@@ -22,9 +22,4 @@ Route::middleware(['wechat.oauth:snsapi_userinfo'])->group(function(){
 //    Route::resource('/sign','SignsController');
 });
 
-Route::get('/code','WeChatController@getCode');
-
-//Route::middleware('check_wechat')->group(function(){
-    $redirectUrl = 'http://112.74.177.132:8107/checkin/index.html';
-    Route::redirect('/sign',$redirectUrl,301);
-//});
+Route::get('/sign','WeChatController@checkSign');

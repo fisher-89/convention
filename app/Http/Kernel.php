@@ -62,9 +62,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         // 微信
         'wechat.oauth' => \Overtrue\LaravelWeChat\Middleware\OAuthAuthenticate::class,
-
-        // 检测微信
-        'check_wechat'=>\App\Http\Middleware\CheckWeChat::class,
     ];
 
     /**
