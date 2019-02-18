@@ -17,8 +17,7 @@ class CheckWeChat
     public function handle($request, Closure $next)
     {
         if(!Session::has('wechat_user')){
-            $url = "http://cs.xigemall.com/code";
-            return redirect($url);
+            return redirect('/code');
         }
         return $next($request);
     }

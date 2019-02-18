@@ -24,7 +24,7 @@ Route::middleware(['wechat.oauth:snsapi_userinfo'])->group(function(){
 
 Route::get('/code','WeChatController@getCode');
 
-Route::middleware('check_wechat')->group(function(){
-    $redirectUrl = 'http://cs.xigemall.com/checkin/index.html';
+//Route::middleware('check_wechat')->group(function(){
+    $redirectUrl = 'http://112.74.177.132:8107/checkin/index.html';
     Route::redirect('/sign',$redirectUrl,301);
-});
+//});
