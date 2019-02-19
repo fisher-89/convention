@@ -8,6 +8,11 @@ use Illuminate\Validation\Rule;
 
 class SignsController extends Controller
 {
+    public function sign()
+    {
+        $redirectUri = 'http://112.74.177.132:8107/app/';
+        return redirect($redirectUri);
+    }
     /**
      * Display a listing of the resource.
      *

@@ -17,6 +17,5 @@ Route::get('/', function () {
 Route::any('/wechat', 'WeChatController@serve');
 
 Route::middleware(['wechat.oauth:snsapi_userinfo'])->group(function(){
-    $redirectUri = 'http://112.74.177.132:8107/app/';
-    Route::redirect('/sign',$redirectUri,301);
+    Route::get('/sign','SignsController@sign');
 });
