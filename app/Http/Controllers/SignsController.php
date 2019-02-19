@@ -10,7 +10,7 @@ class SignsController extends Controller
 {
     public function sign()
     {
-        $redirectUri = 'http://112.74.177.132:8107/app/';
+        $redirectUri = 'http://cs.xigemall.com:8107/app/';
         return redirect($redirectUri);
     }
     /**
