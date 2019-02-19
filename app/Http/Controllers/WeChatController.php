@@ -37,7 +37,7 @@ class WeChatController extends Controller
                 'appid' => $appId,
                 'redirect_uri' => urlencode($redirectUri),
                 'response_type'=>'code',
-                'scope'=>'snsapi_base',
+                'scope'=>'snsapi_userinfo',
                 'state'=>'STATE',
             ];
             $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?' . http_build_query($query) . '#wechat_redirect';
