@@ -40,20 +40,13 @@ class SignsController extends Controller
      */
     public function store(Request $request)
     {
+
         $message = [
-            'openid' => '微信用户',
             'name' => '姓名',
             'mobile' => '手机'
         ];
-        $cacheOpenid = $this->wx->checkWebAccessToken($request->input('openid'));
 
         $request->validate([
-            'openid' => [
-                'required',
-                'string',
-                Rule::in([$cacheOpenid]),
-                Rule::unique('signs'),
-            ],
             'name' => [
                 'required',
                 'between:2,10',
@@ -67,18 +60,15 @@ class SignsController extends Controller
             ],
         ], [], $message);
 
-//        $openId = 'oYMWXxCUI2mP8zhk8mr9k_RX8syE';
-        $openId = $request->input('openid');
-
-//        $signCount = Sign::where('openid', $openId)->count();
-//        abort_if($signCount, 400, '你已经签到过了');
-
-        $user = $this->wx->getUserInfo($openId);
+        $wechatUser = session('wechat.oauth_user.default');
+        $openId = $wechatUser->getId();
+        $signCount = Sign::where('openid', $openId)->count();
+        abort_if($signCount, 400, '你已经签到过了');
 
         $data['openid'] = $openId;
-        $data['nickname'] = $user['nickname'];
-        $data['avatar'] = $user['headimgurl'];
-        $data['sex'] = $user['sex'];
+        $data['nickname'] = $wechatUser->getName();
+        $data['avatar'] = $wechatUser->avatar;
+        $data['sex'] = $wechatUser->original['sex'];
         $data['name'] = $request->input('name');
         $data['mobile'] = $request->input('mobile');
         $response = Sign::create($data);
