@@ -28,7 +28,7 @@ class WeChatController extends Controller
 
     public function checkSign()
     {
-        $redirectUri = 'http://cs.xigemall.com:8007/sign';
+        $redirectUri = 'http://cs.xigemall.com:8007';
         if(Session::has('wechat_user')){
             return redirect($redirectUri);
         }else{
@@ -37,7 +37,7 @@ class WeChatController extends Controller
                 'appid' => $appId,
                 'redirect_uri' => urlencode($redirectUri),
                 'response_type'=>'code',
-                'scope'=>'snsapi_userinfo',
+                'scope'=>'snsapi_base',
                 'state'=>'STATE',
             ];
             $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?' . http_build_query($query) . '#wechat_redirect';
