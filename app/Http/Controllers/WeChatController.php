@@ -28,7 +28,8 @@ class WeChatController extends Controller
 
     public function checkSign()
     {
-        return session('wechat.oauth_user.default');
+        $user =  session('wechat.oauth_user.default');
+        dd($user);
         $redirectUri = 'http://cs.xigemall.com';
         if(Session::has('wechat_user')){
             return redirect($redirectUri);
