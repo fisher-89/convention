@@ -28,7 +28,7 @@ class WeChatController extends Controller
 
     public function checkSign()
     {
-        $redirectUri = 'http://cs.xigemall.com/checkin/index.html';
+        $redirectUri = 'http://cs.xigemall.com:8007';
         if(Session::has('wechat_user')){
             return redirect($redirectUri);
         }else{
