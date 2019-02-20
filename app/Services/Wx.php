@@ -13,6 +13,25 @@ use Illuminate\Support\Facades\Cache;
 class Wx
 {
     /**
+     * 微信用户信息存入缓存
+     * @return string
+     */
+    public function wechatUserInfoToCache()
+    {
+        $wechatUser = session('wechat.oauth_user.default');
+        $openId = $wechatUser->getId();
+        $data['openid'] = $openId;
+        $data['nickname'] = $wechatUser->getName();
+        $data['avatar'] = $wechatUser->avatar;
+        $data['sex'] = $wechatUser->original['sex'];
+
+        if(!Cache::has($openId)){
+            Cache::forever($openId,$data);
+        }
+        return $openId;
+    }
+
+    /**
      * 通过code换取网页授权access_token 存入缓存，返回openid
      * @param string $code
      * @return mixed

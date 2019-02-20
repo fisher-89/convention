@@ -7,6 +7,7 @@ use App\Models\Winner;
 use App\Services\Wx;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 
 class SignsController extends Controller
@@ -25,8 +26,7 @@ class SignsController extends Controller
      */
     public function index()
     {
-        $redirectUri = 'http://cs.xigemall.com:8107/checkin/';
-        return redirect($redirectUri);
+        //
     }
 
 
@@ -38,13 +38,19 @@ class SignsController extends Controller
      */
     public function store(Request $request)
     {
-
+        abort_if(!Cache::has($request->input('openid')),400,'当前openid不存在');
         $message = [
+            'openid'=>'微信号',
             'name' => '姓名',
             'mobile' => '手机'
         ];
 
         $request->validate([
+            'openid' => [
+                'required',
+                'string',
+                Rule::unique('signs'),
+            ],
             'name' => [
                 'required',
                 'between:2,10',
@@ -58,16 +64,7 @@ class SignsController extends Controller
             ],
         ], [], $message);
 
-        $wechatUser = session('wechat.oauth_user.default');
-        $openId = $wechatUser->id;
-        $sign = Sign::where('openid', $openId)->firstOrFail();
-        // 已经签到过了
-        abort_if($sign->count(), 400, $sign->toJson());
-
-        $data['openid'] = $openId;
-        $data['nickname'] = $wechatUser->getName();
-        $data['avatar'] = $wechatUser->avatar;
-        $data['sex'] = $wechatUser->original['sex'];
+        $data = Cache::get($request->input('openid'));
         $data['name'] = $request->input('name');
         $data['mobile'] = $request->input('mobile');
         $response = Sign::create($data);

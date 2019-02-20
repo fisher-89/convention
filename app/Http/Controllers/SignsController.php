@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sign;
+use App\Services\Wx;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 
 class SignsController extends Controller
@@ -13,9 +15,11 @@ class SignsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Wx $wx)
     {
-        $redirectUri = 'http://cs.xigemall.com:8107/checkin/';
+        // 微信用户信息存入缓存
+        $openId = $wx->wechatUserInfoToCache();
+        $redirectUri = 'http://cs.xigemall.com:8107/checkin/index.html?openid='.$openId;
         return redirect($redirectUri);
     }
 

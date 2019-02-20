@@ -17,10 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware(['wechat.oauth:snsapi_userinfo'])->group(function () {
-    Route::get('/sign', 'Api\SignsController@index');
-});
-
 // 获取网页授权openid
 Route::post('openid','Api\WeChatController@getOpenid');
 
