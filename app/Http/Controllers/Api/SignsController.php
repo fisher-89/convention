@@ -25,10 +25,8 @@ class SignsController extends Controller
      */
     public function index()
     {
-        $size = request()->query('size', 200);
-        $winnerOpenid = Winner::pluck('openid')->all();
-        $data = Sign::whereNotIn('openid', $winnerOpenid)->inRandomOrder()->limit($size)->get();
-        return response()->json($data, 200);
+        $redirectUri = 'http://cs.xigemall.com:8107/checkin/';
+        return redirect($redirectUri);
     }
 
 
