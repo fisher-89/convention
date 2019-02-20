@@ -62,8 +62,9 @@ class SignsController extends Controller
 
         $wechatUser = session('wechat.oauth_user.default');
         $openId = $wechatUser->getId();
-        $signCount = Sign::where('openid', $openId)->count();
-        abort_if($signCount, 400, '你已经签到过了');
+        $sign = Sign::where('openid', $openId)->firstOrFail();
+        // 已经签到过了
+        abort_if($sign->count(), 400, $sign->toJson());
 
         $data['openid'] = $openId;
         $data['nickname'] = $wechatUser->getName();
