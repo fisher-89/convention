@@ -15,7 +15,7 @@ class SignsController extends Controller
      */
     public function index()
     {
-        $redirectUri = 'http://cs.xigemall.com:8107/app/';
+        $redirectUri = 'http://cs.xigemall.com:8107/checkin/';
         return redirect($redirectUri);
     }
 
