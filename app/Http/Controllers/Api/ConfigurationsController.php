@@ -19,7 +19,7 @@ use Illuminate\Validation\Rule;
 class ConfigurationsController extends Controller
 {
     /**
-     * 获取最新的配置
+     * 获取配置
      * @return int
      */
     public function index()
@@ -178,5 +178,24 @@ class ConfigurationsController extends Controller
     {
         $data = Award::get();
         return response()->json($data,200);
+    }
+
+    /**
+     * 大屏获取最新配置
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getNewConfiguration()
+    {
+        $maxRound = Configuration::max('round');
+        $data = Configuration::with([
+            'award',
+            'winners' => function ($query) {
+                $query->where('is_receive', 1);
+            },
+            'winners.sign',
+        ])
+            ->where('round',$maxRound)
+            ->firstOrFail();
+        return response()->json($data, 200);
     }
 }

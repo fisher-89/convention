@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // 签到
 Route::apiResource('sign','Api\SignsController');
 
-// 获取最新的配置
+// 获取配置
 Route::get('configuration','Api\ConfigurationsController@index');
 // 配置提交
 Route::post('configuration','Api\ConfigurationsController@store');
@@ -41,4 +41,6 @@ Route::apiResource('winner','Api\WinnersController');
 //弃奖
 Route::patch('abandon_prize','Api\WinnersController@abandonPrize');
 
+// 大屏获取最新配置抽奖
+Route::get('new_configuration','Api\ConfigurationsController@getNewConfiguration');
 
