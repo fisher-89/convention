@@ -196,6 +196,10 @@ class ConfigurationsController extends Controller
         ])
             ->where('round',$maxRound)
             ->firstOrFail();
-        return response()->json($data, 200);
+        $users = $this->getDrawUsers();
+        return response()->json([
+            'data'=>$data,
+            'users'=>$users,
+        ], 200);
     }
 }
