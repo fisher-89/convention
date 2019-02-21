@@ -49,7 +49,8 @@ class ConfigurationsController extends Controller
 
         $request->offsetSet('round', $round);
         $data = Configuration::create($request->input());
-        broadcast(new ConfigurationSave($data->load('award')->toArray()));
+        $users = $this->getDrawUsers();
+        broadcast(new ConfigurationSave($data->load('award')->toArray(),$users));
         return response()->json($data, 201);
     }
 
@@ -65,7 +66,8 @@ class ConfigurationsController extends Controller
         $config = Configuration::where('round',$round)->firstOrFail();
         abort_if($config->winners->count()>0,400,'本轮已经有中奖用户了不能进行编辑操作');
         $config->update($request->input());
-        broadcast(new ConfigurationUpdate($config->load('award')->toArray()));
+        $users = $this->getDrawUsers();
+        broadcast(new ConfigurationUpdate($config->load('award')->toArray(),$users));
         return response()->json($config,201);
     }
 

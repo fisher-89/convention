@@ -14,15 +14,17 @@ class ConfigurationSave implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $data;
+    protected $data;
+    protected $users;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(array $data)
+    public function __construct(array $data,array $users)
     {
         $this->data = $data;
+        $this->users = $users;
     }
 
     /**
@@ -33,5 +35,13 @@ class ConfigurationSave implements ShouldBroadcast
     public function broadcastOn()
     {
         return new Channel('configuration');
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'data'=>$this->data,
+            'users'=>$this->users,
+        ];
     }
 }
