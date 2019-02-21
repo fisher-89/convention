@@ -28,6 +28,11 @@ class EventServiceProvider extends ServiceProvider
 
         // 中奖 弃奖
         'App\Events\WinnerAbandon'=>[],
+
+        // 配置提交
+        'App\Events\ConfigurationSave'=>[],
+        // 配置修改
+        'App\Events\ConfigurationUpdate'=>[],
     ];
 
     /**
