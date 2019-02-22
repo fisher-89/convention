@@ -14,7 +14,6 @@ class WinnerAbandon implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $broadcastQueue = 'convention';
     public $data;
     /**
      * Create a new event instance.

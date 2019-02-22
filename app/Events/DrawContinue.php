@@ -16,7 +16,6 @@ class DrawContinue implements ShouldBroadcast
 
     protected $data;
     protected $users;
-    public $broadcastQueue = 'convention';
     /**
      * Create a new event instance.
      *
