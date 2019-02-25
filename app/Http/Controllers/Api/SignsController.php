@@ -43,7 +43,8 @@ class SignsController extends Controller
         $message = [
             'openid'=>'微信号',
             'name' => '姓名',
-            'mobile' => '手机'
+            'mobile' => '手机',
+            'number'=>'编号',
         ];
 
         $request->validate([
@@ -63,11 +64,16 @@ class SignsController extends Controller
                 'regex:/^1[23456789]\d{9}$/',
                 Rule::unique('signs', 'mobile'),
             ],
+            'number'=>[
+                'required',
+                Rule::unique('signs','number'),
+                Rule::exists('invites','number')->where('name',$request->input('name'))
+            ]
         ], [], $message);
-
         $data = Cache::get($request->input('openid'));
         $data['name'] = $request->input('name');
         $data['mobile'] = $request->input('mobile');
+        $data['number'] = $request->input('number');
         $response = Sign::create($data);
         return response()->json($response, 201);
     }
