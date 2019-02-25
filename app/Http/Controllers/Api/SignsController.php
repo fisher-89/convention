@@ -130,7 +130,8 @@ class SignsController extends Controller
                 'nullable'
             ],
             'money'=>[
-                'string'
+                'string',
+                'nullable'
             ]
         ],[],$message);
         $data = Sign::where('openid',$openid)->firstOrFail();
