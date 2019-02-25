@@ -26,7 +26,8 @@ class SignsController extends Controller
      */
     public function index()
     {
-        //
+        $data = Sign::get();
+        return response()->json($data,200);
     }
 
 
