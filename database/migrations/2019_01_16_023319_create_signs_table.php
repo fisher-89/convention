@@ -22,6 +22,16 @@ class CreateSignsTable extends Migration
             $table->char('nickname',50)->comment('微信用户昵称')->default('');
             $table->string('avatar')->comment('微信头像')->default('');
             $table->unsignedTinyInteger('sex')->comment('微信用户的性别，值为1时是男性，值为2时是女性，值为0时是未知')->default(0);
+            $table->char('number',50)->comment('邀请函编号')->nullable();
+            $table->char('hotel_name',50)->comment('酒店名称')->index()->nullable();
+            $table->char('hotel_num',30)->comment('酒店房号')->nullable();
+            $table->char('idcard',20)->comment('身份证')->nullable();
+            $table->dateTime('start_time')->comment('入住开始时间')->nullable();
+            $table->dateTime('end_time')->comment('入住结束时间')->nullable();
+            $table->decimal('money',7,2)->comment('酒店费用')->nullable();
+            $table->char('update_staff',10)->comment('修改人工号')->nullable();
+            $table->char('update_name',10)->comment('修改人')->nullable();
+
             $table->timestamps();
         });
     }
