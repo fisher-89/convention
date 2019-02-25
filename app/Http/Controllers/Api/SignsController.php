@@ -135,13 +135,14 @@ class SignsController extends Controller
             ]
         ],[],$message);
         $data = Sign::where('openid',$openid)->firstOrFail();
-        $data->hotel_name = $request->input('hotel_name');
-        $data->hotel_num = $request->input('hotel_num');
-        $data->idcard = $request->input('idcard');
-        $data->start_time = $request->input('start_time');
-        $data->end_time = $request->input('end_time');
-        $data->money = $request->input('money');
-        $data->save();
+        $data->update($request->input());
+//        $data->hotel_name = $request->input('hotel_name');
+//        $data->hotel_num = $request->input('hotel_num');
+//        $data->idcard = $request->input('idcard');
+//        $data->start_time = $request->input('start_time');
+//        $data->end_time = $request->input('end_time');
+//        $data->money = $request->input('money');
+//        $data->save();
         return response()->json($data,201);
 
     }
