@@ -197,7 +197,7 @@ class ConfigurationsController extends Controller
             'winners.sign',
         ])
             ->where('round',$maxRound)
-            ->firstOrFail();
+            ->first();
         $users = $this->getDrawUsers();
         return response()->json([
             'data'=>$data,
