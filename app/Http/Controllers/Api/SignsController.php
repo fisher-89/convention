@@ -159,8 +159,8 @@ class SignsController extends Controller
         $idcard = $request->input('idcard');
         $newIdcard = $idcard ? str_after($idcard, config('app.url') . '/storage/') : $idcard;
         $request->offsetSet('idcard', $newIdcard);
-        $request->offsetSet('update_staff',Auth::id());
-        $request->offsetSet('update_name',Auth::user()->realname);
+        $request->offsetSet('update_staff',Auth::id()?:'');
+        $request->offsetSet('update_name',(Auth::user()->realname)?:'');
         $data->update($request->input());
 
         Log::channel('single')->info($data->update_name.'修改之后');

@@ -23,7 +23,7 @@ Route::post('sign', 'Api\SignsController@store');
 Route::get('sign/{openid}', 'Api\SignsController@show');
 
 
-Route::middleware('auth:api')->group(function () {
+//Route::middleware('auth:api')->group(function () {
     // 签到列表
     Route::get('sign', 'Api\SignsController@index');
     // 签到补充信息
@@ -50,7 +50,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('winner', 'Api\WinnersController');
     //弃奖
     Route::patch('abandon_prize', 'Api\WinnersController@abandonPrize');
-});
+//});
 
 // 大屏获取最新配置抽奖
 Route::get('new_configuration', 'Api\ConfigurationsController@getNewConfiguration');
