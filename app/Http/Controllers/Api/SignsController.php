@@ -35,7 +35,9 @@ class SignsController extends Controller
                 ->orWhere('number', 'like', 'GO%')
                 ->orWhere('number', 'like', 'FM%');
         })
-            ->get();
+            ->filterByQueryString()
+            ->sortByQueryString()
+            ->withPagination();
         return response()->json($data, 200);
     }
 
