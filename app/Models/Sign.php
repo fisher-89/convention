@@ -23,4 +23,8 @@ class Sign extends Model
         'update_staff',
         'update_name',
     ];
+
+    public function getIdcardAttribute($value){
+        return $this->attributes['idcard'] = config('app.url').'/storage/'.$value;
+    }
 }

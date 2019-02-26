@@ -27,7 +27,7 @@ class SignsController extends Controller
     public function index()
     {
         $data = Sign::get();
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
 
 
@@ -39,12 +39,12 @@ class SignsController extends Controller
      */
     public function store(Request $request)
     {
-        abort_if(!Cache::has($request->input('openid')),400,'当前openid不存在');
+        abort_if(!Cache::has($request->input('openid')), 400, '当前openid不存在');
         $message = [
-            'openid'=>'微信号',
+            'openid' => '微信号',
             'name' => '姓名',
             'mobile' => '手机',
-            'number'=>'编号',
+            'number' => '编号',
         ];
 
         $request->validate([
@@ -64,10 +64,10 @@ class SignsController extends Controller
                 'regex:/^1[23456789]\d{9}$/',
                 Rule::unique('signs', 'mobile'),
             ],
-            'number'=>[
+            'number' => [
                 'required',
-                Rule::unique('signs','number'),
-                Rule::exists('invites','number')->where('name',$request->input('name'))
+                Rule::unique('signs', 'number'),
+                Rule::exists('invites', 'number')->where('name', $request->input('name'))
             ]
         ], [], $message);
         $data = Cache::get($request->input('openid'));
@@ -101,40 +101,46 @@ class SignsController extends Controller
     public function update(Request $request, $openid)
     {
         $message = [
-          'hotel_name'=>'酒店名称',
-          'hotel_num'=>'酒店房号',
-          'idcard'=>'身份证',
-          'start_time'=>'入住开始时间',
-          'end_time'=>'入住结束时间',
-          'money'=>'酒店费用',
+            'hotel_name' => '酒店名称',
+            'hotel_num' => '酒店房号',
+            'idcard' => '身份证',
+            'start_time' => '入住开始时间',
+            'end_time' => '入住结束时间',
+            'money' => '酒店费用',
         ];
         $request->validate([
-            'hotel_name'=>[
+            'hotel_name' => [
                 'string',
-                'max:50'
+                'max:50',
+                'nullable'
             ],
-            'hotel_num'=>[
+            'hotel_num' => [
                 'string',
-                'max:30'
+                'max:30',
+                'nullable'
             ],
-            'idcard'=>[
+            'idcard' => [
                 'string',
-                'max:20'
+                'max:255',
+                'nullable'
             ],
-            'start_time'=>[
+            'start_time' => [
                 'date',
                 'nullable'
             ],
-            'end_time'=>[
+            'end_time' => [
                 'date',
                 'nullable'
             ],
-            'money'=>[
+            'money' => [
                 'string',
                 'nullable'
             ]
-        ],[],$message);
-        $data = Sign::where('openid',$openid)->firstOrFail();
+        ], [], $message);
+        $data = Sign::where('openid', $openid)->firstOrFail();
+        $idcard = $request->input('idcard');
+        $newIdcard = $idcard ?  str_after($idcard,config('app.url').'/storage/') : $idcard;
+        $request->offsetSet('idcard',$newIdcard);
         $data->update($request->input());
 //        $data->hotel_name = $request->input('hotel_name');
 //        $data->hotel_num = $request->input('hotel_num');
@@ -143,7 +149,7 @@ class SignsController extends Controller
 //        $data->end_time = $request->input('end_time');
 //        $data->money = $request->input('money');
 //        $data->save();
-        return response()->json($data,201);
+        return response()->json($data, 201);
 
     }
 
@@ -156,5 +162,30 @@ class SignsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * 上传身份证
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function upload(Request $request)
+    {
+        $message = [
+            'idcard' => '身份证',
+        ];
+        $request->validate([
+            'idcard' => [
+                'file',
+            ],
+        ], [], $message);
+
+        $file = $request->file('idcard');
+        // 扩展名
+        $extension = $file->getClientOriginalExtension();
+        $fileName = date('YmdHis') . '-' . str_random(6) . '.' . $extension;
+        $idcardPath = $request->idcard->storeAs('images', $fileName, 'public');
+        $path =  config('app.url').'/storage/'.$idcardPath;
+        return response()->json($path, 201);
     }
 }
