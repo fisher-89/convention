@@ -25,7 +25,7 @@ class CreateSignsTable extends Migration
             $table->char('number',50)->comment('邀请函编号')->nullable();
             $table->char('hotel_name',50)->comment('酒店名称')->index()->nullable();
             $table->char('hotel_num',30)->comment('酒店房号')->nullable();
-            $table->char('idcard',20)->comment('身份证')->nullable();
+            $table->string('idcard')->comment('身份证')->nullable();
             $table->dateTime('start_time')->comment('入住开始时间')->nullable();
             $table->dateTime('end_time')->comment('入住结束时间')->nullable();
             $table->decimal('money',7,2)->comment('酒店费用')->nullable();
