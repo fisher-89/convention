@@ -7,7 +7,9 @@ use App\Models\Winner;
 use App\Services\Wx;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class SignsController extends Controller
@@ -149,10 +151,20 @@ class SignsController extends Controller
             ]
         ], [], $message);
         $data = Sign::where('openid', $openid)->firstOrFail();
+
+        // 写入日志
+        Log::channel('single')->info($data->update_name.'修改之前');
+        Log::channel('single')->info($data->toArray());
+
         $idcard = $request->input('idcard');
         $newIdcard = $idcard ? str_after($idcard, config('app.url') . '/storage/') : $idcard;
         $request->offsetSet('idcard', $newIdcard);
+        $request->offsetSet('update_staff',Auth::id());
+        $request->offsetSet('update_name',Auth::user()->realname);
         $data->update($request->input());
+
+        Log::channel('single')->info($data->update_name.'修改之后');
+        Log::channel('single')->info($data->toArray());
 //        $data->hotel_name = $request->input('hotel_name');
 //        $data->hotel_num = $request->input('hotel_num');
 //        $data->idcard = $request->input('idcard');

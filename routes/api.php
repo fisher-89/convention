@@ -17,32 +17,41 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// 签到
-Route::apiResource('sign','Api\SignsController');
-// 上传身份证
-Route::post('upload','Api\SignsController@upload');
-
-// 获取配置
-Route::get('configuration','Api\ConfigurationsController@index');
-// 配置提交
-Route::post('configuration','Api\ConfigurationsController@store');
-// 配置修改
-Route::put('configuration/{round}','Api\ConfigurationsController@update');
-// 开始抽奖
-Route::get('start','Api\ConfigurationsController@start');
-// 停止抽奖
-Route::get('stop','Api\ConfigurationsController@stop');
-// 继续抽奖
-Route::get('continue','Api\ConfigurationsController@continueDraw');
-// 获取奖品
-Route::get('award','Api\ConfigurationsController@getAward');
+// 签到提交
+Route::post('sign', 'Api\SignsController@store');
+// 签到详情
+Route::get('sign/{openid}', 'Api\SignsController@show');
 
 
-// 中奖
-Route::apiResource('winner','Api\WinnersController');
-//弃奖
-Route::patch('abandon_prize','Api\WinnersController@abandonPrize');
+Route::middleware('auth:api')->group(function () {
+    // 签到列表
+    Route::get('sign', 'Api\SignsController@index');
+    // 签到补充信息
+    Route::patch('sign/{openid}', 'Api\SignsController@update');
+    // 上传身份证
+    Route::post('upload', 'Api\SignsController@upload');
+
+    // 获取配置
+    Route::get('configuration', 'Api\ConfigurationsController@index');
+    // 配置提交
+    Route::post('configuration', 'Api\ConfigurationsController@store');
+    // 配置修改
+    Route::put('configuration/{round}', 'Api\ConfigurationsController@update');
+    // 开始抽奖
+    Route::get('start', 'Api\ConfigurationsController@start');
+    // 停止抽奖
+    Route::get('stop', 'Api\ConfigurationsController@stop');
+    // 继续抽奖
+    Route::get('continue', 'Api\ConfigurationsController@continueDraw');
+    // 获取奖品
+    Route::get('award', 'Api\ConfigurationsController@getAward');
+
+    // 中奖
+    Route::apiResource('winner', 'Api\WinnersController');
+    //弃奖
+    Route::patch('abandon_prize', 'Api\WinnersController@abandonPrize');
+});
 
 // 大屏获取最新配置抽奖
-Route::get('new_configuration','Api\ConfigurationsController@getNewConfiguration');
+Route::get('new_configuration', 'Api\ConfigurationsController@getNewConfiguration');
 
