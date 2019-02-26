@@ -25,6 +25,11 @@ class Sign extends Model
     ];
 
     public function getIdcardAttribute($value){
-        return $this->attributes['idcard'] = config('app.url').'/storage/'.$value;
+        return config('app.url').'/storage/'.$value;
+    }
+
+    public function setNumberAttribute($value)
+    {
+        $this->attributes['number'] = strtoupper($value);
     }
 }
