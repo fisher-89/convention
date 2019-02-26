@@ -24,9 +24,18 @@ class SignsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Sign::get();
+        $category = $request->query('category');
+        $data = Sign::when($category == 'mobile', function ($query) {
+            return $query->where('number', 'like', 'CJ%')
+                ->orWhere('number', 'like', 'JN%')
+                ->orWhere('number', 'like', 'LS%')
+                ->orWhere('number', 'like', 'LS%')
+                ->orWhere('number', 'like', 'GO%')
+                ->orWhere('number', 'like', 'FM%');
+        })
+            ->get();
         return response()->json($data, 200);
     }
 
@@ -139,8 +148,8 @@ class SignsController extends Controller
         ], [], $message);
         $data = Sign::where('openid', $openid)->firstOrFail();
         $idcard = $request->input('idcard');
-        $newIdcard = $idcard ?  str_after($idcard,config('app.url').'/storage/') : $idcard;
-        $request->offsetSet('idcard',$newIdcard);
+        $newIdcard = $idcard ? str_after($idcard, config('app.url') . '/storage/') : $idcard;
+        $request->offsetSet('idcard', $newIdcard);
         $data->update($request->input());
 //        $data->hotel_name = $request->input('hotel_name');
 //        $data->hotel_num = $request->input('hotel_num');
@@ -185,7 +194,7 @@ class SignsController extends Controller
         $extension = $file->getClientOriginalExtension();
         $fileName = date('YmdHis') . '-' . str_random(6) . '.' . $extension;
         $idcardPath = $request->idcard->storeAs('images', $fileName, 'public');
-        $path =  config('app.url').'/storage/'.$idcardPath;
+        $path = config('app.url') . '/storage/' . $idcardPath;
         return response()->json($path, 201);
     }
 }

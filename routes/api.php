@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // 签到
 Route::apiResource('sign','Api\SignsController');
+// 上传身份证
 Route::post('upload','Api\SignsController@upload');
 
 // 获取配置
