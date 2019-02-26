@@ -25,7 +25,12 @@ class Sign extends Model
     ];
 
     public function getIdcardAttribute($value){
-        return config('app.url').'/storage/'.$value;
+        if($value){
+            return config('app.url').'/storage/'.$value;
+        }else{
+            return $value;
+        }
+
     }
 
     public function setNumberAttribute($value)
