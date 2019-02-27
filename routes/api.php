@@ -22,6 +22,8 @@ Route::post('sign', 'Api\SignsController@store');
 // 签到详情
 Route::get('sign/{openid}', 'Api\SignsController@show');
 
+// 检测用户登陆
+Route::get('check/{openid}','Api\SignsController@check');
 
 //Route::middleware('auth:api')->group(function () {
     // 签到列表

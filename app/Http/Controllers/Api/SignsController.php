@@ -212,4 +212,16 @@ class SignsController extends Controller
         $path = config('app.url') . '/storage/' . $idcardPath;
         return response()->json($path, 201);
     }
+
+    /**
+     * 检测用户登陆
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function check(Request $request)
+    {
+        $openid = $request->route('openid');
+        $data = Cache::get($openid);
+        return response()->json($data,200);
+    }
 }
