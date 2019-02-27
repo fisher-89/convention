@@ -14,8 +14,8 @@ class CreateInvitesTable extends Migration
     public function up()
     {
         Schema::create('invites', function (Blueprint $table) {
-            $table->increments('id');
-            $table->char('number',50)->comment('编号')->unique();
+            $table->engine = 'MyISAM';
+            $table->char('number',50)->primary()->comment('编号');
             $table->char('name',10)->comment('名字');
             $table->char('mobile',11)->comment('电话');
 //            $table->timestamps();
