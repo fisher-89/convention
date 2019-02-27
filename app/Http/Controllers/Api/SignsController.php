@@ -88,6 +88,7 @@ class SignsController extends Controller
         $data['mobile'] = $request->input('mobile');
         $data['number'] = $request->input('number');
         $response = Sign::create($data);
+        Cache::forever($data['openid'],$data);
         return response()->json($response, 201);
     }
 
