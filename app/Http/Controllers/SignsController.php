@@ -19,7 +19,7 @@ class SignsController extends Controller
     {
         // 微信用户信息存入缓存
         $openId = $wx->wechatUserInfoToCache();
-        $redirectUri = 'http://cs.xigemall.com:8107/checkin/index.html?openid='.$openId;
+        $redirectUri = config('convention.url').'?openid='.$openId;
         return redirect($redirectUri);
     }
 
