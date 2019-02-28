@@ -45,8 +45,11 @@ Route::get('check/{openid}','Api\SignsController@check');
     Route::get('stop', 'Api\ConfigurationsController@stop');
     // 继续抽奖
     Route::get('continue', 'Api\ConfigurationsController@continueDraw');
+
     // 获取奖品
-    Route::get('award', 'Api\ConfigurationsController@getAward');
+    Route::apiResource('award', 'Api\AwardsController');
+    // 上传奖品
+    Route::post('upload_award','Api\AwardsController@uploadAward');
 
     // 中奖
     Route::apiResource('winner', 'Api\WinnersController');

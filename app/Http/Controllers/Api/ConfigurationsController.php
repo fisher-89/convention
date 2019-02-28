@@ -172,15 +172,6 @@ class ConfigurationsController extends Controller
         return $users->toArray();
     }
 
-    /**
-     * 获取奖品列表
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getAward()
-    {
-        $data = Award::get();
-        return response()->json($data,200);
-    }
 
     /**
      * 大屏获取最新配置

@@ -14,6 +14,6 @@ class Award extends Model
 
     public function getUrlAttribute($value)
     {
-        return config('app.url').$value;
+        return config('app.url').'/storage'.$value;
     }
 }
