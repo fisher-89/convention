@@ -55,9 +55,9 @@ class SignsController extends Controller
         abort_if(!Cache::has($request->input('openid')), 400, '当前openid不存在');
         $message = [
             'openid' => '微信号',
-            'name' => '姓名',
-            'mobile' => '手机',
-            'number' => '编号',
+            'name' => '您的姓名',
+            'mobile' => '您的电话',
+            'number' => '签到码',
         ];
 
         $request->validate([
@@ -88,7 +88,7 @@ class SignsController extends Controller
         $data['mobile'] = $request->input('mobile');
         $data['number'] = $request->input('number');
         $response = Sign::create($data);
-        Cache::forever($data['openid'],$data);
+        Cache::forever($data['openid'], $data);
         return response()->json($response, 201);
     }
 
@@ -222,6 +222,6 @@ class SignsController extends Controller
     {
         $openid = $request->route('openid');
         $data = Cache::get($openid);
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
 }
