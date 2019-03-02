@@ -64,7 +64,9 @@ class ConfigurationsController extends Controller
         $this->validateRequest($request);
         $round = $request->route('round');
         $config = Configuration::where('round',$round)->firstOrFail();
-        abort_if($config->winners->count()>0,400,'本轮已经有中奖用户了不能进行编辑操作');
+        $winnersCount = $config->winners()->where('is_receive',1)->count();
+
+        abort_if($winnersCount>0,400,'本轮已经有中奖用户了不能进行编辑操作');
         $config->update($request->input());
         $users = $this->getDrawUsers();
         broadcast(new ConfigurationUpdate($config->load('award')->toArray(),$users));
