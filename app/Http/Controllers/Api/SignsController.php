@@ -222,6 +222,16 @@ class SignsController extends Controller
     {
         $openid = $request->route('openid');
         $data = Cache::get($openid);
+        if($data && (!array_has($data,'name'))){
+            $sign = Sign::where('openid', $openid)->first();
+            if($sign){
+                $data['name'] = $sign->name;
+                $data['mobile'] = $sign->mobile;
+                $data['number'] = $sign->number;
+                Cache::forever($openid, $data);
+            }
+
+        }
         return response()->json($data, 200);
     }
 }
