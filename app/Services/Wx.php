@@ -31,7 +31,7 @@ class Wx
         }else{
             $data = Cache::get($openId);
             $sign = Sign::where('openid', $openId)->first();
-            if(!array_has($data,'name') && $sign){
+            if((!array_has($data,'name')) && $sign){
                 $data['name'] = $sign->name;
                 $data['mobile'] = $sign->mobile;
                 $data['number'] = $sign->number;
