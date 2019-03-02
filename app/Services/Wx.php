@@ -26,19 +26,20 @@ class Wx
         $data['avatar'] = $wechatUser->avatar;
         $data['sex'] = $wechatUser->original['sex'];
 
-        if(!Cache::has($openId)){
-            Cache::forever($openId,$data);
-        }else{
-            $data = Cache::get($openId);
-            $sign = Sign::where('openid', $openId)->first();
-            if((!array_has($data,'name')) && $sign){
-                $data['name'] = $sign->name;
-                $data['mobile'] = $sign->mobile;
-                $data['number'] = $sign->number;
-                Cache::forever($openId, $data);
-            }
-
+        if (!Cache::has($openId)) {
+            Cache::forever($openId, $data);
         }
+
+        // 检测是否签到过
+        $data = Cache::get($openId);
+        $sign = Sign::where('openid', $openId)->first();
+        if ((!array_has($data, 'name')) && $sign) {
+            $data['name'] = $sign->name;
+            $data['mobile'] = $sign->mobile;
+            $data['number'] = $sign->number;
+            Cache::forever($openId, $data);
+        }
+
         return $openId;
     }
 
