@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Permission;
 use App\Models\Sign;
 use App\Models\Winner;
 use App\Services\Wx;
@@ -114,6 +115,9 @@ class SignsController extends Controller
      */
     public function update(Request $request, $openid)
     {
+        $currentStaff = Auth::id();
+        $staffs = Permission::pluck('staff_sn')->all();
+        abort_if(!in_array($currentStaff,$staffs),400,'你没修改权限');
         $message = [
             'hotel_name' => '酒店名称',
             'hotel_num' => '酒店房号',
