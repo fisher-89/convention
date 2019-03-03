@@ -117,7 +117,7 @@ class SignsController extends Controller
     {
         $currentStaff = Auth::id();
         $staffs = Permission::pluck('staff_sn')->all();
-        abort_if(!in_array($currentStaff,$staffs),400,'你没修改权限');
+        abort_if(!in_array($currentStaff,$staffs),403,'你没修改权限');
         $message = [
             'hotel_name' => '酒店名称',
             'hotel_num' => '酒店房号',
