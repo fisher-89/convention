@@ -29,6 +29,10 @@ class AwardsController extends Controller
      */
     public function store(Request $request)
     {
+        $message = [
+          'name'=>'奖品名称',
+          'url'=>'图片',
+        ];
         $request->validate([
             'name'=>[
                 'required',
@@ -42,7 +46,7 @@ class AwardsController extends Controller
                 'string',
                 'max:255'
             ]
-        ],[],[]);
+        ],[],$message);
         $url = $request->input('url');
         $newUrl = $url ? str_after($url, config('app.url') . '/storage') : $url;
         $request->offsetSet('url', $newUrl);
