@@ -39,6 +39,7 @@ class Wx
             $data['mobile'] = $sign->mobile;
             $data['number'] = $sign->number;
             Cache::forever($openId, $data);
+        } elseif (!array_has($data, 'name')) {
             $clear = true;
         }
 
