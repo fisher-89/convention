@@ -33,14 +33,16 @@ class Wx
         // 检测是否签到过
         $data = Cache::get($openId);
         $sign = Sign::where('openid', $openId)->first();
+        $clear = false;
         if ((!array_has($data, 'name')) && $sign) {
             $data['name'] = $sign->name;
             $data['mobile'] = $sign->mobile;
             $data['number'] = $sign->number;
             Cache::forever($openId, $data);
+            $clear = true;
         }
 
-        return $openId;
+        return ['openid' => $openId, 'clearCache' => $clear];
     }
 
     private function curl($url, $data = [])
