@@ -19,7 +19,7 @@ class SignsController extends Controller
     {
         // 微信用户信息存入缓存
         $res = $wx->wechatUserInfoToCache();
-        $redirectUri = config('convention.url') . '?openid=' . $res['openid'] . ($res['clearCache'] ? '&clear-cache' : '');
+        $redirectUri = config('convention.url') . '?openid=' . $res['openid'] . ($res['clearCache'] ? '&clear-cache=1' : '');
         return redirect($redirectUri);
     }
 
