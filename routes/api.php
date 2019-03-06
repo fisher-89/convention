@@ -46,13 +46,17 @@ Route::middleware('auth:api')->group(function () {
     // 继续抽奖
     Route::get('continue', 'Api\ConfigurationsController@continueDraw');
 
-    // 获取奖品
-    Route::apiResource('award', 'Api\AwardsController');
+    // 奖品
+    Route::apiResource('award', 'Api\AwardsController')->only([
+        'index','store','update','destroy'
+    ]);
     // 上传奖品
     Route::post('upload_award','Api\AwardsController@uploadAward');
 
     // 中奖
-    Route::apiResource('winner', 'Api\WinnersController');
+    Route::apiResource('winner', 'Api\WinnersController')->only([
+        'index'
+    ]);
     //弃奖
     Route::patch('abandon_prize', 'Api\WinnersController@abandonPrize');
 });
