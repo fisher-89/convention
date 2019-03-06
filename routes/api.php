@@ -25,7 +25,7 @@ Route::get('sign/{openid}', 'Api\SignsController@show');
 // 检测用户登陆
 Route::get('check/{openid}','Api\SignsController@check');
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api','check.manager'])->group(function () {
     // 签到列表
     Route::get('sign', 'Api\SignsController@index');
     // 签到补充信息
