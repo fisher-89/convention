@@ -15,7 +15,7 @@ class Wx
 {
     /**
      * 微信用户信息存入缓存
-     * @return string
+     * @return array
      */
     public function wechatUserInfoToCache()
     {
