@@ -10,7 +10,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 
 class SignsController extends Controller
@@ -170,13 +172,6 @@ class SignsController extends Controller
 
         Log::channel('single')->info($data->update_name . '修改之后');
         Log::channel('single')->info($data->toArray());
-//        $data->hotel_name = $request->input('hotel_name');
-//        $data->hotel_num = $request->input('hotel_num');
-//        $data->idcard = $request->input('idcard');
-//        $data->start_time = $request->input('start_time');
-//        $data->end_time = $request->input('end_time');
-//        $data->money = $request->input('money');
-//        $data->save();
         return response()->json($data, 201);
 
     }
@@ -192,6 +187,19 @@ class SignsController extends Controller
         //
     }
 
+    /**
+     * 清空全部签到数据
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function signClear()
+    {
+        // 清空所有缓存
+        Cache::flush();
+        // 清空所有微信session
+        Session::flush();
+        DB::table('signs')->delete();
+        return response('',204);
+    }
     /**
      * 上传身份证
      * @param Request $request

@@ -30,6 +30,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('sign', 'Api\SignsController@index');
     // 签到补充信息
     Route::patch('sign/{openid}', 'Api\SignsController@update');
+    // 签到数据清空
+    Route::delete('sign_clear','Api\SignsController@signClear');
     // 上传身份证
     Route::post('upload', 'Api\SignsController@upload');
 
