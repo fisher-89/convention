@@ -17,7 +17,7 @@ class CreateInvitesTable extends Migration
             $table->engine = 'MyISAM';
             $table->char('number',50)->primary()->comment('编号');
             $table->char('name',10)->comment('名字');
-            $table->char('mobile',11)->comment('电话');
+            $table->char('mobile',11)->comment('电话')->default('');
 //            $table->timestamps();
         });
     }
