@@ -39,6 +39,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('configuration', 'Api\ConfigurationsController@store');
     // 配置修改
     Route::put('configuration/{round}', 'Api\ConfigurationsController@update');
+    // 清空全部配置与中奖信息
+    Route::delete('configuration_clear','Api\ConfigurationsController@configurationClear');
     // 开始抽奖
     Route::get('start', 'Api\ConfigurationsController@start');
     // 停止抽奖

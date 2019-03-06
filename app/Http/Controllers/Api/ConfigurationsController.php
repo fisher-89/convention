@@ -50,7 +50,7 @@ class ConfigurationsController extends Controller
         $request->offsetSet('round', $round);
         $data = Configuration::create($request->input());
         $users = $this->getDrawUsers();
-        broadcast(new ConfigurationSave($data->load('award')->toArray(),$users));
+        broadcast(new ConfigurationSave($data->load('award')->toArray(), $users));
         return response()->json($data, 201);
     }
 
@@ -63,14 +63,14 @@ class ConfigurationsController extends Controller
     {
         $this->validateRequest($request);
         $round = $request->route('round');
-        $config = Configuration::where('round',$round)->firstOrFail();
-        $winnersCount = $config->winners()->where('is_receive',1)->count();
+        $config = Configuration::where('round', $round)->firstOrFail();
+        $winnersCount = $config->winners()->where('is_receive', 1)->count();
 
-        abort_if($winnersCount>0,400,'本轮已经有中奖用户了不能进行编辑操作');
+        abort_if($winnersCount > 0, 400, '本轮已经有中奖用户了不能进行编辑操作');
         $config->update($request->input());
         $users = $this->getDrawUsers();
-        broadcast(new ConfigurationUpdate($config->load('award')->toArray(),$users));
-        return response()->json($config,201);
+        broadcast(new ConfigurationUpdate($config->load('award')->toArray(), $users));
+        return response()->json($config, 201);
     }
 
     protected function validateRequest($request)
@@ -93,6 +93,7 @@ class ConfigurationsController extends Controller
             ]
         ], [], $message);
     }
+
     /**
      * 开始抽奖
      * @param Request $request
@@ -149,9 +150,9 @@ class ConfigurationsController extends Controller
     {
         $round = $request->query('round');
         $config = Configuration::with('award')
-        ->withCount(['winners' => function ($query) {
-            $query->where('is_receive', 1);
-        }])->where('round', $round)->first();
+            ->withCount(['winners' => function ($query) {
+                $query->where('is_receive', 1);
+            }])->where('round', $round)->first();
         abort_if($config->winners_count == $config->persions, 400, '本轮不能继续抽奖了，请重新开启');
         $config->is_progress = 1;
         $config->save();
@@ -174,7 +175,6 @@ class ConfigurationsController extends Controller
         return $users->toArray();
     }
 
-
     /**
      * 大屏获取最新配置
      * @return \Illuminate\Http\JsonResponse
@@ -189,12 +189,23 @@ class ConfigurationsController extends Controller
             },
             'winners.sign',
         ])
-            ->where('round',$maxRound)
+            ->where('round', $maxRound)
             ->first();
         $users = $this->getDrawUsers();
         return response()->json([
-            'data'=>$data,
-            'users'=>$users,
+            'data' => $data,
+            'users' => $users,
         ], 200);
+    }
+
+    /**
+     * 清空全部配置与中奖信息
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function configurationClear()
+    {
+        DB::table('configurations')->delete();
+        DB::table('winners')->delete();
+        return response('',204);
     }
 }
