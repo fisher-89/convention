@@ -195,8 +195,6 @@ class SignsController extends Controller
     {
         // 清空所有缓存
         Cache::flush();
-        // 清空所有微信session
-        Session::flush();
         DB::table('signs')->delete();
         return response('',204);
     }
