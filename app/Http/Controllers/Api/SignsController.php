@@ -33,12 +33,8 @@ class SignsController extends Controller
     {
         $category = $request->query('category');
         $data = Sign::when($category == 'mobile', function ($query) {
-            return $query->where('number', 'like', 'CJ%')
-                ->orWhere('number', 'like', 'JN%')
-                ->orWhere('number', 'like', 'LS%')
-                ->orWhere('number', 'like', 'LS%')
-                ->orWhere('number', 'like', 'GO%')
-                ->orWhere('number', 'like', 'FM%');
+            return $query->where('number','not like','11%')
+                ->where('number','not like','12%');
         })
             ->filterByQueryString()
             ->sortByQueryString()
