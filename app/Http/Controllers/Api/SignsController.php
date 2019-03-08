@@ -31,6 +31,9 @@ class SignsController extends Controller
      */
     public function index(Request $request)
     {
+        $currentStaff = Auth::id();
+        $staffs = Permission::pluck('staff_sn')->all();
+        abort_if(!in_array($currentStaff,$staffs),403,'你没查看权限');
         $category = $request->query('category');
         $data = Sign::when($category == 'mobile', function ($query) {
             return $query->where('number','not like','11%')
